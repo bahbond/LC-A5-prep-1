@@ -26,17 +26,62 @@ let palettes = [
 // HT: Hex values for palettes copied, rather efficiently, from https://coolors.co/palettes/trending
 
 // TODO: Establish variable to track current palette
-
+let currentPalette = {"name": "", "colors": []};
 
 // TODO: Add listener to make sure page elements have completely loaded
+window.addEventListener("load", function(){
+  console.log('Page Loaded');
 
+  console.log('Data Loaded');
+  init();
+});
 
 // Function handles all basic functionality once page has loaded
 function init() {
 
   // TODO: Code reference objects needed for dynamic functionality
+let header = document.getElementById("header");
+let coloredText = document.getElementById("colored-text");
+let button = document.getElementById("get-colors");
+let paletteName = document.getElementById("palette-name");
+let colorBlocks = []; //Store five div elements
+let colorCodes = []; // store all p elements
+for (let i= 0; i <5; i++){
+   colorBlocks.push(document.getElementById("color" + i));
+   colorCodes.push(document.getElementById("code" + i));
+}
 
 
   // TODO: Code event listeners and functions
+function changePalette(){
+  let randomIndex;
+
+  if(currentPalette.name ===""){
+    window.alert("Let's get rid of this boring, monochromatic looking page!");
+  }
+  do{ 
+    randomIndex = Math.floor(Math.random() * palettes.length);
+    currentPalette = palettes[randomIndex];
+  }while(paletteName.innerHTML === currentPalette.name)
+  console.log(`Current palette is now ${currentPalette.name}.`);
+  
+paletteName.innerHTML = currentPalette.name;
+for(let i = 0; i <5; i++){
+  colorBlocks[i].style.backgroundColor = currentPalette.colors[i];
+  colorCodes[i].innerHTML = currentPalette.colors[i].toUpperCase();
+}  
+  header.style.backgroundColor = currentPalette.colors[0];
+  coloredText.style.color = currentPalette.colors[4];
+  
+
+}
+button.addEventListener("click", changePalette);
+
+button.addEventListener("mouseover", function(){
+button.style.backgroundColor = currentPalette.colors[4];
+});
+button.addEventListener("mouseout", function(){
+  button.style.backgroundColor = "#222";
+  });
 }
 
